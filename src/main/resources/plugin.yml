@@ -1,0 +1,11 @@
+name: "MarryMe"
+version: 1.0.0
+author: AzRoDoRzA
+main: fr.azrodorza.marryme.Main
+api-version: 1.15
+
+commands:
+  marry:
+    usage: /<command>
+  abc:
+    usage: /<command>
