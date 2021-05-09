@@ -2,9 +2,9 @@
 
 package fr.azrodorza.marryme.controller
 
-import fr.azrodorza.marryme.component.user.NewWedding
+import fr.azrodorza.marryme.gui.MarryGui
+import fr.azrodorza.marryme.management.InvitationManagement
 import fr.azrodorza.marryme.management.WeddingManagement
-import fr.azrodorza.marryme.model.others.InvitationModel
 import fr.azrodorza.marryme.util.command.CommandMapping
 import hazae41.minecraft.kutils.bukkit.msg
 import org.bukkit.Bukkit
@@ -25,14 +25,19 @@ class MarryCommand {
 
         //checking for correct inputs
         if (sender !is Player) return
-        if(args.isEmpty()) return
 
-        //retrieving unique ids
+        //getting both players
         val firstMarry = sender.player
         val secondMarry = Bukkit.getPlayer(args[0])
 
         //verifying that both players are not null
         if(firstMarry == null || secondMarry == null) return
+
+
+        if(args.isEmpty()){
+            MarryGui.open(firstMarry)
+            return
+        }
 
         //if he ask to marry to himself
         if(firstMarry.name == secondMarry.name) {
@@ -41,9 +46,9 @@ class MarryCommand {
         }
 
         //if the commandSender never send invitation to player, send one
-        if(!InvitationModel.isPlayerXInvitedByPlayerY(secondMarry.uniqueId, firstMarry.uniqueId)){
-            if(!InvitationModel.isPlayerXInvitedByPlayerY(firstMarry.uniqueId, secondMarry.uniqueId))
-                InvitationModel.sendInvitation(firstMarry, secondMarry)
+        if(!InvitationManagement.isPlayerXInvitedByPlayerY(secondMarry.uniqueId, firstMarry.uniqueId)){
+            if(!InvitationManagement.isPlayerXInvitedByPlayerY(firstMarry.uniqueId, secondMarry.uniqueId))
+                InvitationManagement.sendInvitation(firstMarry, secondMarry)
             else
             // if the commandSender already received an invitation from the player he is trying to marry, marry them
                 WeddingManagement.marryPlayers(firstMarry, secondMarry)
@@ -72,7 +77,7 @@ class MarryCommand {
         if(firstMarry == null || secondMarry == null) return
 
         //if he hasn't been invited, exit
-        if(!InvitationModel.isPlayerXInvitedByPlayerY(secondMarry.uniqueId, firstMarry.uniqueId)) return
+        if(!InvitationManagement.isPlayerXInvitedByPlayerY(secondMarry.uniqueId, firstMarry.uniqueId)) return
 
         //marry the players
         WeddingManagement.marryPlayers(firstMarry, secondMarry)
@@ -97,6 +102,6 @@ class MarryCommand {
         if(firstMarry == null || secondMarry == null) return
 
         //removeInvitation
-        InvitationModel.removeInvitationOfPlayer(secondMarry, firstMarry);
+        InvitationManagement.removeInvitationOfPlayer(secondMarry, firstMarry);
     }
 }

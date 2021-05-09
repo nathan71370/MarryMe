@@ -1,4 +1,4 @@
-package fr.azrodorza.marryme.model.others
+package fr.azrodorza.marryme.management
 
 import com.github.shynixn.mccoroutine.launch
 import fr.azrodorza.marryme.Main
@@ -6,19 +6,25 @@ import fr.azrodorza.marryme.util.plugin.Instance
 import hazae41.minecraft.kutils.bukkit.msg
 import kotlinx.coroutines.delay
 import org.bukkit.Sound
-import org.bukkit.entity.Entity
 import org.bukkit.entity.EntityType
 import org.bukkit.entity.Player
 import java.util.*
 
-class InvitationModel {
-
+/**
+ * Manage invitations
+ */
+class InvitationManagement {
     companion object {
+
+        /**
+         * Send invitation to receiver and alert sender with a message
+         */
         fun sendInvitation(sender: Player, receiver: Player) {
             Main.invitationList[sender.uniqueId] = receiver.uniqueId
             sender.msg("Invitation for a wedding sent with love!")
             receiver.msg("Would you marry me ? -" + sender.name + " |/marry accept or /marry deny| 120 seconds to choose...")
 
+            //we add fireworks on the player who is getting invitation
             Instance.plugin.launch {
                 for (i in 1..3) {
                     receiver.world.spawnEntity(receiver.location, EntityType.FIREWORK);
@@ -26,6 +32,7 @@ class InvitationModel {
                     delay(250)
                 }
 
+                //we remove invitation after 120s
                 delay(120000)
                 removeInvitationOfPlayer(receiver, sender)
             }

@@ -4,10 +4,14 @@ import fr.azrodorza.marryme.util.exposed.DatabaseValidator
 import fr.azrodorza.marryme.util.plugin.Instance
 import com.zaxxer.hikari.HikariConfig
 
+/**
+ * Configuration of the plugin
+ */
 class MarryMeConfiguration {
     private val config = HikariConfig()
     private val plugin = Instance.plugin
 
+    //database configuration
     private val dbHost: String? = plugin.config.getString("database.host")
     private val dbPort: String = plugin.config.getString("database.port") ?: "5432"
     private val dbName: String? = plugin.config.getString("database.name")

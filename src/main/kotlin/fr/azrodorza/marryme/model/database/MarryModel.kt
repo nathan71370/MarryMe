@@ -4,6 +4,9 @@ import org.jetbrains.exposed.sql.Table
 import org.jetbrains.exposed.sql.`java-time`.datetime
 import java.time.LocalDateTime
 
+/**
+ * Our database model
+ */
 object MarryModel : Table("marry") {
     val id = integer("id").autoIncrement()
 
